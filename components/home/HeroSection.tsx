@@ -1,5 +1,6 @@
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 export default function HeroSection() {
     return (
@@ -16,9 +17,11 @@ export default function HeroSection() {
                 Discover unique crochet items, custom phone cases, and beautiful
                 crafts made just for you
               </p>
-              <Button size="lg" className="px-8 py-6 text-lg">
-                Shop now
-                <ArrowRight className="w-8 h-6" />
+              <Button  className="px-8 py-6 text-lg" asChild>
+                <Link href="/shop" className="flex items-center">
+                  <span className="text-xl">Shop now</span>
+                  <ArrowRight className="w-8 h-6" />
+                </Link>
               </Button>
             </div>
           </div>
