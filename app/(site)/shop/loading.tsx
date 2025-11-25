@@ -1,5 +1,5 @@
 // app/shop/loading.tsx
-import ProductCardSkeleton from "@/components/products/ProductCardSkeleton";
+import ProductCardSkeleton from "@/components/shop/ProductCardSkeleton";
 import HeaderSection from "@/components/common/HeaderSection";
 import Footer from "@/components/layout/Footer";
 import { Skeleton } from "@/components/ui/skeleton"; // shadcn/ui Skeleton
