@@ -1,26 +1,22 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function ProductCardSkeleton() {
+export default function CategoryFilterSkeleton() {
   return (
-    <div className="bg-card rounded-lg shadow-md overflow-hidden animate-pulse">
-      <div className="relative overflow-hidden aspect-square">
-        <Skeleton className="w-full h-full" />
-      </div>
-      <div className="p-4 space-y-2">
-        <Skeleton className="h-5 w-3/4 rounded" /> {/* titre */}
-        <Skeleton className="h-4 w-full rounded" />  {/* description ligne 1 */}
-        <Skeleton className="h-4 w-5/6 rounded" />  {/* description ligne 2 */}
-        <div className="flex items-center justify-between mt-2">
-          <div className="flex flex-col">
-            <Skeleton className="h-3 w-12 rounded mb-1" /> {/* "As from" */}
-            <Skeleton className="h-5 w-16 rounded" />    {/* prix */}
-          </div>
-          <div className="flex space-x-2">
-            <Skeleton className="h-8 w-16 rounded" /> {/* bouton View */}
-            <Skeleton className="h-8 w-8 rounded-full" /> {/* bouton AddToCart */}
-          </div>
+    <aside className="lg:w-64 shrink-0">
+      <div className="bg-background rounded-lg shadow-md p-6 sticky top-24">
+        {/* Titre Filters */}
+        <Skeleton className="h-6 w-32 mb-6" />
+
+        {/* Titre Categories */}
+        <Skeleton className="h-4 w-24 mb-3" />
+
+        {/* Liens catégories */}
+        <div className="space-y-2">
+          {Array.from({ length: 6 }).map((_, idx) => (
+            <Skeleton key={idx} className="h-8 w-full rounded-lg" />
+          ))}
         </div>
       </div>
-    </div>
+    </aside>
   );
 }
