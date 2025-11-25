@@ -1,0 +1,54 @@
+// import { ShoppingCart } from 'lucide-react';
+// import { Product } from '@/types/index';
+import Image from "next/image";
+// import AddToCartButton from '../common/AddToCartButton';
+import { Button } from '../ui/button';
+import { Product } from "@/app/generated/prisma/browser";
+interface ProductCardProps {
+  product: Product;
+}
+
+export default function ProductCard({ product }: ProductCardProps) {
+  return (
+    <div className="bg-card rounded-lg shadow-md overflow-hidden group hover:shadow-xl transition-shadow duration-300">
+      <div className="relative overflow-hidden aspect-square">
+        <Image
+          src={product.image || "/no_image_available.jpg"}
+          alt={product.name}
+          className="object-cover group-hover:scale-110 transition-transform duration-500"
+          fill
+        />
+        {/**
+         * {product?.isPreOrder && (
+          <div className="absolute top-2 right-2 bg-amber-500 text-card-foreground px-3 py-1 rounded-full text-xs font-semibold">
+            Pre-Order
+          </div>
+        )}
+        )}
+         */}
+        {/**
+         * {product.stock > 0 && product.stock <= 3 && !product.isPreOrder && (
+          <div className="absolute top-2 right-2 bg-primary/80 text-primary-foreground px-3 py-1 rounded-full text-xs font-semibold">
+            Only {product.stock} left
+          </div>
+        )}
+         */}
+      </div>
+      <div className="p-4">
+        <h3 className="text-lg font-semibold text-card-foreground mb-2">{product.name}</h3>
+        <p className="text-sm text-card-foreground/70 mb-3 line-clamp-2">{product.description}</p>
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col justify-center">
+            <span className="text-xs">As from</span>
+            <span className="text-lg font-bold text-card-foreground">${product.min_price?.toString() ?? "0.00"}</span>
+          </div>
+          <div className="flex space-x-2">
+            <Button variant="outline" className="px-4 py-2 border border-primary/70 text-primary/90 rounded-lg hover:bg-primary/10 transition-colors text-sm font-medium">
+              View
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
