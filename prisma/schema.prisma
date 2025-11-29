@@ -13,7 +13,6 @@ datasource db {
   provider = "postgresql"
 }
 
-
 enum Role {
   USER
   ADMIN
@@ -33,8 +32,8 @@ enum OrderStatus {
 
 model User {
   id         String    @id @default(uuid())
-  first_name String?
-  last_name  String?
+  firstName  String?   @map("first_name")
+  lastName   String?   @map("last_name")
   email      String    @unique
   password   String
   role       Role
@@ -53,49 +52,40 @@ model Category {
 }
 
 model Product {
-  id          String           @id @default(uuid())
-  name        String
-  slug        String           @unique
-  description String?
-  image       String?
-  min_price   Decimal?         @db.Decimal(10, 2)
-  Category    Category[]
-  variants    ProductVariant[]
-  created_at  DateTime         @default(now())
-  updated_at  DateTime         @updatedAt
+  id           String           @id @default(uuid())
+  name         String
+  slug         String           @unique
+  description  String?
+  defaultImage String?          @map("image")
+  price        Decimal?         @map("min_price") @db.Decimal(10, 2)
+  stock        Int              @default(0)
+  Category     Category[]
+  images       ProductsImages[]
+  orderItems   OrderItem[]
+  created_at   DateTime         @default(now())
+  updated_at   DateTime         @updatedAt
 
   @@index([slug])
 }
 
-model ProductVariant {
-  id         String         @id @default(uuid())
-  name       String
-  price      Decimal        @db.Decimal(10, 2)
-  stock      Int            @default(0)
-  product    Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId  String
-  images     VariantImage[]
-  created_at DateTime       @default(now())
-  updated_at DateTime       @updatedAt
-  isDefault  Boolean        @default(false)
-}
-
-model VariantImage {
-  id               String         @id @default(uuid())
-  url              String
-  alt              String
-  sortOrder        Int
-  productVariant   ProductVariant @relation(fields: [productVariantId], references: [id], onDelete: Cascade)
-  productVariantId String
-  isDefault        Boolean        @default(false)
+model ProductsImages {
+  id        String  @id @default(uuid())
+  url       String
+  alt       String
+  sortOrder Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  isDefault Boolean @default(false)
 }
 
 model OrderItem {
-  id       String  @id @default(uuid())
-  quantity Int
-  price    Decimal @db.Decimal(10, 2)
-  order    Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  orderId  String
+  id        String  @id @default(uuid())
+  quantity  Int
+  unitPrice Decimal @db.Decimal(10, 2)
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   String
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
 }
 
 model Address {
@@ -130,4 +120,3 @@ model Order {
 
   @@index([userId, orderType])
 }
-
