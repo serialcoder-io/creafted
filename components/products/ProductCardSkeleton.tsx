@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function CategoryFilterSkeleton() {
   return (
-    <aside className="lg:w-64 shrink-0">
+    <aside className="lg:w-72 shrink-0">
       <div className="bg-background rounded-lg shadow-md p-6 sticky top-24">
         {/* Titre Filters */}
         <Skeleton className="h-6 w-32 mb-6" />

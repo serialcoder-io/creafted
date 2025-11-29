@@ -1,6 +1,7 @@
 //import { Product } from '@/generated/prisma/browser';
 
 import { ShoppingCart } from "lucide-react"
+import { Button } from "@/components/ui/button";
 //interface AddToCartButtonProps {
   //product: Product;
 //}
@@ -8,10 +9,8 @@ import { ShoppingCart } from "lucide-react"
 
 export default function AddToCartButton() {
   return (
-    <button // Zustand / Context / whatever
-      className="px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 transition-colors flex items-center space-x-1 disabled:bg-gray-300 disabled:cursor-not-allowed text-sm font-medium"
-    >
+    <Button variant="default" size="icon" >
       <ShoppingCart className="w-4 h-4" />
-    </button>
+    </ Button>
   )
 }
