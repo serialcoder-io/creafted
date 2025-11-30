@@ -19,14 +19,9 @@ export default function ProductCard({ product }: ProductCardProps) {
           className="object-cover group-hover:scale-110 transition-transform duration-500"
           fill
         />
-        {/**
-         * {product?.isPreOrder && (
-          <div className="absolute top-2 right-2 bg-amber-500 text-card-foreground px-3 py-1 rounded-full text-xs font-semibold">
-            Pre-Order
-          </div>
-        )}
-        )}
-         */}
+        
+        
+         
         {/**
          * {product.stock > 0 && product.stock <= 3 && !product.isPreOrder && (
           <div className="absolute top-2 right-2 bg-primary/80 text-primary-foreground px-3 py-1 rounded-full text-xs font-semibold">
@@ -43,10 +38,15 @@ export default function ProductCard({ product }: ProductCardProps) {
             <span className="text-2xl font-normal text-card-foreground">${product.price?.toString() ?? "0.00"}</span>
           </div>
           <div className="flex space-x-2">
-            <Button variant="outline" className="px-4 py-2 border border-primary/70 text-primary/90 rounded-lg hover:bg-primary/10 transition-colors text-sm font-medium">
+            <Button variant="outline" size="sm" className="px-4 py-2 border border-primary/70 text-primary/90 rounded-lg hover:bg-primary/10 transition-colors text-sm font-medium">
               View
             </Button>
-            <AddToCartButton />
+            {(product.stock < 2) ? (
+              <Button className="px-3 py-1 text-xs font-semibold" size="sm">
+                Pre-Order
+              </Button>
+            ): <AddToCartButton />}
+            
           </div>
         </div>
       </div>

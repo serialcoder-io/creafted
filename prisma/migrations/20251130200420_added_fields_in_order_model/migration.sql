@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN');
+CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN', 'SUPER_ADMIN');
 
 -- CreateEnum
 CREATE TYPE "OrderType" AS ENUM ('ORDER', 'PRE_ORDER');
@@ -39,6 +39,7 @@ CREATE TABLE "Product" (
     "description" TEXT,
     "image" TEXT,
     "min_price" DECIMAL(10,2),
+    "stock" INTEGER NOT NULL DEFAULT 0,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -46,37 +47,24 @@ CREATE TABLE "Product" (
 );
 
 -- CreateTable
-CREATE TABLE "ProductVariant" (
-    "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "price" DECIMAL(10,2) NOT NULL,
-    "stock" INTEGER NOT NULL DEFAULT 0,
-    "productId" TEXT NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL,
-    "isDefault" BOOLEAN NOT NULL DEFAULT false,
-
-    CONSTRAINT "ProductVariant_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "VariantImage" (
+CREATE TABLE "ProductsImages" (
     "id" TEXT NOT NULL,
     "url" TEXT NOT NULL,
     "alt" TEXT NOT NULL,
     "sortOrder" INTEGER NOT NULL,
-    "productVariantId" TEXT NOT NULL,
+    "productId" TEXT NOT NULL,
     "isDefault" BOOLEAN NOT NULL DEFAULT false,
 
-    CONSTRAINT "VariantImage_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "ProductsImages_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "OrderItem" (
     "id" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
-    "price" DECIMAL(10,2) NOT NULL,
+    "unitPrice" DECIMAL(10,2) NOT NULL,
     "orderId" TEXT NOT NULL,
+    "productId" TEXT NOT NULL,
 
     CONSTRAINT "OrderItem_pkey" PRIMARY KEY ("id")
 );
@@ -106,6 +94,7 @@ CREATE TABLE "Order" (
     "city" TEXT NOT NULL,
     "postalCode" TEXT NOT NULL,
     "phone" TEXT,
+    "description" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -136,13 +125,13 @@ CREATE INDEX "Order_userId_orderType_idx" ON "Order"("userId", "orderType");
 CREATE INDEX "_CategoryToProduct_B_index" ON "_CategoryToProduct"("B");
 
 -- AddForeignKey
-ALTER TABLE "ProductVariant" ADD CONSTRAINT "ProductVariant_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "VariantImage" ADD CONSTRAINT "VariantImage_productVariantId_fkey" FOREIGN KEY ("productVariantId") REFERENCES "ProductVariant"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "ProductsImages" ADD CONSTRAINT "ProductsImages_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Address" ADD CONSTRAINT "Address_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

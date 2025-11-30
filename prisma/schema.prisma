@@ -16,6 +16,7 @@ datasource db {
 enum Role {
   USER
   ADMIN
+  SUPER_ADMIN
 }
 
 enum OrderType {
@@ -108,15 +109,15 @@ model Order {
   userId    String?
 
   // Address used for this order (copied from the user's saved address or entered manually)
-  fullName   String
-  street     String
-  city       String
-  postalCode String
-  phone      String?
-
-  orderItems OrderItem[]
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
+  fullName    String
+  street      String
+  city        String
+  postalCode  String
+  phone       String?
+  description String?
+  orderItems  OrderItem[]
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
 
   @@index([userId, orderType])
 }
