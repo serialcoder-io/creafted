@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { Product } from "@/app/generated/prisma/browser";
 import AddToCartButton from "../ui/custom/product/AddToCartButton";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 interface ProductCardProps {
   product: Product;
 }
@@ -21,13 +22,12 @@ export default function ProductCard({ product }: ProductCardProps) {
           fill
         />
 
-        {/**
-         * {product.stock > 0 && product.stock <= 3 && !product.isPreOrder && (
-          <div className="absolute top-2 right-2 bg-primary/80 text-primary-foreground px-3 py-1 rounded-full text-xs font-semibold">
-            Only {product.stock} left
+        {product.stock  < 1  && (
+          <div className="absolute top-0 left-0 w-full h-full bg-background/50 flex items-center justify-center">
+            <Badge variant="outline" className="bg-destructive/40 text-background">Out Of Stock (Pre-Order)</Badge>
           </div>
         )}
-         */}
+    
       </div>
       <div className="p-4">
         <h3 className="text-lg font-semibold text-card-foreground mb-2">

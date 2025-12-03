@@ -103,7 +103,7 @@ model Address {
 
 model Order {
   id        String      @id @default(uuid())
-  orderType OrderType
+  orderType OrderType   @default(ORDER)
   status    OrderStatus
   user      User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId    String?
