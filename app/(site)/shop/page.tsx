@@ -1,4 +1,4 @@
-import ProductCard from "@/components/products/ProductCard";
+import ProductCard from "@/components/shop/ProductCard";
 import HeaderSection from "@/components/common/HeaderSection";
 import Footer from "@/components/layout/Footer";
 import prisma from "@/lib/prisma";

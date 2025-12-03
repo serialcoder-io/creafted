@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 
 export default function AddToCartButton() {
   return (
-    <Button variant="default" size="icon" >
+    <Button variant="default" size="icon-sm" >
       <ShoppingCart className="w-4 h-4" />
     </ Button>
   )

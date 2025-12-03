@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import ProductCard from "../products/ProductCard";
+import ProductCard from "@/components/shop/ProductCard";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 
