@@ -1,52 +1,40 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-export default async function GET(
+export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
+  const resolvedParams = await params;
+  const { id } = resolvedParams
 
-  // Fetch product from database
   const product = await prisma.product.findUnique({
     where: { id },
     include: {
-      images: {
-        orderBy: {
-          sortOrder: "asc",
-        },
-      },
+      images: { orderBy: { sortOrder: "asc" } },
     },
   });
 
   if (!product) {
-    return new Response(JSON.stringify({ error: "Product not found" }), {
-      status: 404,
-      headers: { "Content-Type": "application/json" },
-    });
+    return NextResponse.json({ error: "Product not found" }, { status: 404 });
   }
 
-  // Prepare product images
-  const productImages = product.images.length
-    ? product.images.map((img) => ({
-        url: img.url,
-        alt: img.alt,
-        sortOrder: img.sortOrder,
-      }))
-    : [
-        {
-          url: product.defaultImage || "/no_image_available.jpg",
-          alt: product.name || "No Image Available",
-          sortOrder: 1,
-        },
-      ];
+  const productImages =
+    product.images.length > 0
+      ? product.images.map((img) => ({
+          url: img.url,
+          alt: img.alt,
+          sortOrder: img.sortOrder,
+        }))
+      : [
+          {
+            url: product.defaultImage || "/no_image_available.jpg",
+            alt: product.name || "No Image Available",
+            sortOrder: 1,
+          },
+        ];
 
-  // Return product with images
-  return new Response(
-    JSON.stringify({ product: { ...product, images: productImages } }),
-    {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    }
-  );
+  return NextResponse.json({
+    product: { ...product, images: productImages },
+  });
 }
