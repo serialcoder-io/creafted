@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import ProductGallery from "@/components/shop/ProductGallery";
 import HeaderSection from "@/components/common/HeaderSection";
 import ProductDetails from "@/components/shop/ProductDetails";
+import { productForClient } from "@/lib/utils";
 
 type Props = {
   params: Promise<{ id: string }>; 
@@ -41,19 +42,7 @@ export default async function ProductDetailPage({ params }: Props) {
         },
       ];
 
-  /**
-   * Convert product data for client use
-   * - Converts Decimal to number for price
-   * - Converts Date to ISO string for created_at and updated_at
-   */
-  const productForClient = product
-  ? {
-      ...product,
-      price: Number(product.price),
-      created_at: product.created_at.toISOString(),
-      updated_at: product.updated_at.toISOString(),
-    }
-  : null;
+  const safeProduct = productForClient(product!);
 
 
   if (!product) {
@@ -71,7 +60,7 @@ export default async function ProductDetailPage({ params }: Props) {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 bg-background p-8 rounded-3xl shadow-lg">
           <ProductGallery images={productImages} />
 
-          <ProductDetails product={productForClient!} />
+          <ProductDetails product={safeProduct} />
         </div>
       </div>
     </div>

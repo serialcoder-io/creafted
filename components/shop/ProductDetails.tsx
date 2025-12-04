@@ -5,29 +5,19 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Heart, Minus, Plus, ShoppingCart } from "lucide-react";
-type ProductForClient = {
-  id: string;
-  slug: string;
-  name: string;
-  description: string | null;
-  defaultImage: string | null;
-  price: number;
-  stock: number;
-  created_at: string;
-  updated_at: string;
-  images?: {
-    id: string;
-    sortOrder: number;
-    url: string;
-    alt: string;
-    productId: string;
-    isDefault: boolean;
-  }[];
-};
+import { useCartStore } from "@/store/carteStore";
+import { ProductForClient } from "@/types/products";
+
 
 export default function ProductDetails({ product }: { product: ProductForClient }) {
-  const [isFavorite, setIsFavorite] = useState(false);
+  // const [isFavorite, setIsFavorite] = useState(false);
   const [quantity, setQuantity] = useState(1);
+
+  const addItemToCart = useCartStore((state) => state.addItem);
+  const itemInCart = useCartStore((state) => state.findItemById(product.id));
+
+
+
 
   return (
     <div className="space-y-4">
@@ -70,6 +60,11 @@ export default function ProductDetails({ product }: { product: ProductForClient 
 
       {/* Quantity Selector */}
       <div className="mb-6">
+        {itemInCart && (
+          <p className="text-sm text-foreground/70 mb-2">
+            You have {itemInCart.quantity} of this item in your cart.
+          </p>
+        )}
         <label className="block mb-2 text-sm text-foreground/60">Quantity</label>
         <div className="inline-flex items-center gap-4 bg-white rounded-full px-6 py-3 shadow-md">
           <Button

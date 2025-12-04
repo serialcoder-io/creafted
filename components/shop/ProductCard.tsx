@@ -7,11 +7,15 @@ import { Product } from "@/app/generated/prisma/browser";
 import AddToCartButton from "../ui/custom/product/AddToCartButton";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { productForClient } from "@/lib/utils";
 interface ProductCardProps {
   product: Product;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+
+  const safeProduct = productForClient(product);
+
   return (
     <div className="bg-card rounded-lg shadow-md overflow-hidden group hover:shadow-xl transition-shadow duration-300">
       <div className="relative overflow-hidden aspect-square">
@@ -56,7 +60,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 Pre-Order
               </Button>
             ) : (
-              <AddToCartButton />
+              <AddToCartButton product={safeProduct} />
             )}
           </div>
         </div>
